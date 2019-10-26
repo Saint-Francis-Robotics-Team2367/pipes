@@ -5,7 +5,6 @@
 #include <queue>
 #include <vector>
 #include <condition_variable>
-#include <iostream>
 // Templates make it easier to tailor the pipe to the specific module, but add extra complexity TODO
 template <typename Q, typename V>
 class genericPipe {
@@ -31,8 +30,14 @@ class genericPipe {
 		return val;
 	}
 	
-	void insertVector(V val, int pos) {
-		
+	std::vector<V> getVector() {
+		std::unique_lock<std::mutex> lock(_mutex);
+		return _vector;
+	}
+	
+	void setVector(std::vector<V> vect) {
+		std::unique_lock<std::mutex> lock(_mutex);
+		_vector = vect; 
 	}
 
 	void releasePipe() {
@@ -46,5 +51,4 @@ class genericPipe {
 		if (_state) { _state = false; return; }
 		cv.wait(lock);
 	}
-
 };
