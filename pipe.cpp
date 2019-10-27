@@ -31,7 +31,8 @@ void genericPipe::setVector(std::vector<float> vect) {
 void genericPipe::releasePipe() {
 	std::unique_lock<std::mutex> lock(_mutex);
 	_state = true;
-	cv.notify_all();
+	lock.unlock();
+	cv.notify_one();
 }
 	
 void genericPipe::acquirePipe() { // returns false if pipe is in use, true if pipe has been acquired
