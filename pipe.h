@@ -7,7 +7,6 @@
 #include <mutex>
 #include <queue>
 #include <vector>
-#include <condition_variable>
 
 class genericPipe {
 	std::mutex _mutex;
@@ -17,8 +16,7 @@ class genericPipe {
 	
 	public:
 	
-	bool _state = true; // Manages pipe state, readable/writable or in use
-	std::condition_variable cv; // Makes the thread sleep if the pipe is in use
+	bool _lockable = true; // Manages pipe state, readable/writable or in use
 
 	void pushQueue(int);
 	int popQueue();
@@ -27,7 +25,7 @@ class genericPipe {
 	void setVector(std::vector<float>);
 
 	void releasePipe();
-	void acquirePipe();
+	bool acquirePipe();
 };
 
 #endif
