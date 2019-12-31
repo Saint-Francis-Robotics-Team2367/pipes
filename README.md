@@ -14,5 +14,5 @@ To access data from a pipe, one must:
 
 `GenericPipe::acquirePipe()` returns true if the pipe was acquired, and false when it is being used. This way, code can still be run if it is not dependent on the data from the pipe. 
 
-For cases where an efficient method of blocking for a pipe acquire, `GenericPipe::blockingAcquirePipe()` puts the thread to sleep using C++11 condition variables until the pipe has been released.
+For cases where an efficient method of blocking for a pipe acquire is necessary, `GenericPipe::blockingAcquirePipe()` puts the thread to sleep using C++11 condition variables until the pipe has been released.
 See `example.cpp` for a reference use case.
