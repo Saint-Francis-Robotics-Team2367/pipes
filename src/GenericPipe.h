@@ -1,14 +1,14 @@
 /* Krishna Mani
  * Pipe.h
  */
-#ifndef PIPE_H
-#define PIPE_H
+#ifndef GENERICPIPE_H
+#define GENERICPIPE_H
 
 #include <mutex>
 #include <queue>
 #include <vector>
 
-class genericPipe {
+class GenericPipe {
 	std::mutex _mutex;
 	
 	std::queue<int> _queue; // Intended use is to store an instruction queue to talk to modules

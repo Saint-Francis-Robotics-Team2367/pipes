@@ -1,9 +1,9 @@
-#include "pipe.h"
+#include "GenericPipe.h"
 #include <thread>
 #include <iostream>
 #include <chrono>
 
-void f1(genericPipe* pipe) {
+void f1(GenericPipe* pipe) {
 	while(true) {
 		if(!pipe->acquirePipe()) continue;
 		std::cout << "f1 got the pipe" << std::endl;
@@ -14,7 +14,7 @@ void f1(genericPipe* pipe) {
 	}
 }
 
-void f2(genericPipe* pipe) {
+void f2(GenericPipe* pipe) {
 	while(true) { // This is called spinning, on the actual robot threads are scheduled
 		if(!pipe->acquirePipe()) continue; // Spin until pipe is ready
 		std::cout << "f2 got the pipe" << std::endl;
@@ -25,7 +25,7 @@ void f2(genericPipe* pipe) {
 }
 
 int main() {
-	genericPipe *pipe = new genericPipe();
+	GenericPipe *pipe = new GenericPipe();
 	std::thread t1(f1, pipe);
 	std::thread t2(f2, pipe);
 	t1.join();
