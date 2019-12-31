@@ -7,6 +7,7 @@
 #include <mutex>
 #include <queue>
 #include <vector>
+#include <condition_variable>
 
 class GenericPipe {
 	std::mutex _mutex;
@@ -17,7 +18,7 @@ class GenericPipe {
 	public:
 	
 	bool _lockable = true; // Manages pipe state, readable/writable or in use
-
+	std::condition_variable cv; // For blockingAcquirePipe()
 	void pushQueue(int);
 	int popQueue();
 
@@ -26,6 +27,7 @@ class GenericPipe {
 
 	void releasePipe();
 	bool acquirePipe();
+	void blockingAcquirePipe();
 };
 
 #endif

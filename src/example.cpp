@@ -5,7 +5,7 @@
 
 void f1(GenericPipe* pipe) {
 	while(true) {
-		if(!pipe->acquirePipe()) continue;
+		pipe->blockingAcquirePipe();
 		std::cout << "f1 got the pipe" << std::endl;
 		std::this_thread::sleep_for(std::chrono::seconds(5)); // To simulate some work being done
 		pipe->pushQueue(50);
@@ -16,7 +16,7 @@ void f1(GenericPipe* pipe) {
 
 void f2(GenericPipe* pipe) {
 	while(true) { // This is called spinning, on the actual robot threads are scheduled
-		if(!pipe->acquirePipe()) continue; // Spin until pipe is ready
+		pipe->blockingAcquirePipe();
 		std::cout << "f2 got the pipe" << std::endl;
 		std::cout << "Value from queue: " << pipe->popQueue() << std::endl; // If this function happens before the first one, this would throw an error
 		pipe->releasePipe();

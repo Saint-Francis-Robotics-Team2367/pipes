@@ -27,11 +27,18 @@ void GenericPipe::releasePipe() {
 	std::unique_lock<std::mutex> lock(_mutex);
 	_lockable = true;
 	lock.unlock();
+	cv.notify_one();
 }
 	
 bool GenericPipe::acquirePipe() {
 	std::unique_lock<std::mutex> lock(_mutex);
 	if (!_lockable) { return _lockable; }
 	_lockable = false;
-	return true; 
+	return true;
+}
+
+void GenericPipe::blockingAcquirePipe() {
+	std::unique_lock<std::mutex> lock(_mutex);
+	if (_lockable) { _lockable = false; return; }
+	cv.wait(lock);
 }
