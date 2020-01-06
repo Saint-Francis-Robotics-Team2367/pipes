@@ -4,13 +4,13 @@
 
 #include "GenericPipe.h"
 
-void GenericPipe::pushQueue(int val) {
+void GenericPipe::pushQueue(void* val) {
 	_queue.push(val);
 }
 
-int GenericPipe::popQueue() {
-	if(_queue.empty()) return -1; // no instruction 
-	int val = _queue.front();
+void* GenericPipe::popQueue() {
+	if(_queue.empty()) return nullptr; // no instruction 
+	void* val = _queue.front();
 	_queue.pop();
 	return val;
 }
