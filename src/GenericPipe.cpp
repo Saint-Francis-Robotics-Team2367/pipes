@@ -9,7 +9,7 @@ void GenericPipe::pushQueue(int val) {
 }
 
 int GenericPipe::popQueue() {
-	if(_queue.empty()) return 0; // Zero is a reserved instruction, means queue is empty
+	if(_queue.empty()) return -1; // no instruction 
 	int val = _queue.front();
 	_queue.pop();
 	return val;
