@@ -25,7 +25,7 @@ class GenericPipe {
 	std::vector<float> getVector();
 	void setVector(std::vector<float>);
 	
-	void* object; // Can be used for anything
+	void* object = nullptr; // Can be used for anything
 
 	void releasePipe();
 	bool acquirePipe();
