@@ -4,41 +4,25 @@
 
 #include "GenericPipe.h"
 
-void GenericPipe::pushQueue(void* val) {
-	_queue.push(val);
+void GenericPipe::pushQueue(Message* msg) {
+	_mutex.lock();
+	_stack.push(msg);	
+	_mutex.unlock();
 }
 
 void* GenericPipe::popQueue() {
-	if(_queue.empty()) return nullptr; // no instruction 
-	void* val = _queue.front();
-	_queue.pop();
-	return val;
-}
+	Message* msg = nullptr;
+	static Message ret;
 
-std::vector<float> GenericPipe::getVector() {
-	return _vector;
-}
-
-void GenericPipe::setVector(std::vector<float> vect) {
-	_vector = vect; 
-}
-
-void GenericPipe::releasePipe() {
-	std::unique_lock<std::mutex> lock(_mutex);
-	_lockable = true;
-	lock.unlock();
-	cv.notify_one();
-}
+	_mutex.lock();
+	if(!_stack.empty()) { msg = _stack.top(); } // pop doesn't return the value
+	_stack.pop();
+	_mutex.unlock();
 	
-bool GenericPipe::acquirePipe() {
-	std::unique_lock<std::mutex> lock(_mutex);
-	if (!_lockable) { return _lockable; }
-	_lockable = false;
-	return true;
-}
+	// Make deep copy
+	ret.str = msg->str;
+	ret.val = msg->val;
+	delete msg; // If this is too slow, remove and use global delete
 
-void GenericPipe::blockingAcquirePipe() {
-	std::unique_lock<std::mutex> lock(_mutex);
-	if (_lockable) { _lockable = false; return; }
-	cv.wait(lock);
+	return &ret;
 }
