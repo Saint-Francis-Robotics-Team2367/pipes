@@ -10,6 +10,7 @@
 
 class Message {
 	public:
+	Message(std::string, float);
 	std::string str;
 	float val;
 };

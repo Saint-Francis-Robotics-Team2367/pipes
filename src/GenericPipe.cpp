@@ -4,6 +4,8 @@
 
 #include "GenericPipe.h"
 
+Message::Message(std::string _str, float _val) : str(_str), val(_val) {}
+
 void GenericPipe::pushQueue(Message* msg) {
 	_mutex.lock();
 	_stack.push(msg);	
@@ -12,7 +14,6 @@ void GenericPipe::pushQueue(Message* msg) {
 
 void* GenericPipe::popQueue() {
 	Message* msg = nullptr;
-	static Message ret;
 
 	_mutex.lock();
 	if(!_stack.empty()) { msg = _stack.top(); } // pop doesn't return the value
@@ -20,8 +21,8 @@ void* GenericPipe::popQueue() {
 	_mutex.unlock();
 	
 	// Make deep copy
-	ret.str = msg->str;
-	ret.val = msg->val;
+	static Message ret(msg->str, msg->val);
+
 	delete msg; // If this is too slow, remove and use global delete
 
 	return &ret;
