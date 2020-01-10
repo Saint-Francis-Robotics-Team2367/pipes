@@ -5,31 +5,24 @@
 #define GENERICPIPE_H
 
 #include <mutex>
-#include <queue>
-#include <vector>
-#include <condition_variable>
+#include <stack>
+#include <string>
+
+class Message {
+	public:
+	std::string str;
+	float val;
+};
 
 class GenericPipe {
 	std::mutex _mutex;
 	
-	std::queue<int> _queue; // Intended use is to store an instruction queue to talk to modules
-	std::vector<float> _vector;	// For use in motor setpoint control, sensor values, etc.
-	
+	std::stack<Message*> _stack;
 	public:
-	
-	bool _lockable = true; // Manages pipe state, readable/writable or in use
-	std::condition_variable cv; // For blockingAcquirePipe()
-	void pushQueue(int);
-	int popQueue();
 
-	std::vector<float> getVector();
-	void setVector(std::vector<float>);
-	
-	void* object; // Can be used for anything
+	void pushQueue(Message*);
+	void* popQueue();
 
-	void releasePipe();
-	bool acquirePipe();
-	void blockingAcquirePipe();
 };
 
 #endif
