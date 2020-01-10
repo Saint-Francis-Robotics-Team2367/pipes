@@ -18,11 +18,10 @@ class GenericPipe {
 	std::mutex _mutex;
 	
 	std::stack<Message*> _stack;
-	public:
 
+	public:
 	void pushQueue(Message*);
 	void* popQueue();
-
 };
 
 #endif
