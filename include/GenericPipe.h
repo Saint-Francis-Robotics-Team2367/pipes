@@ -9,18 +9,20 @@
 #include <string>
 
 class Message {
-	public:
-	std::string str;
-	float val;
+  public:
+  Message();
+  Message(std::string, float);
+  std::string str;
+  float val;
 };
 
 class GenericPipe {
-	std::mutex _mutex;
-	std::deque<Message*> _deque;
+  std::mutex _mutex;
+  std::deque<Message*> _deque;
 
-	public:
-	void pushQueue(Message*);
-	Message* popQueue();
+  public:
+  void pushQueue(Message*);
+  Message* popQueue();
 };
 
 #endif
