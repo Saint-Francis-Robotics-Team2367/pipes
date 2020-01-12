@@ -5,23 +5,22 @@
 #define GENERICPIPE_H
 
 #include <mutex>
-#include <stack>
+#include <deque>
 #include <string>
 
 class Message {
 	public:
-	Message(std::string, float);
 	std::string str;
 	float val;
 };
 
 class GenericPipe {
 	std::mutex _mutex;
-	std::stack<Message*> _stack;
+	std::deque<Message*> _deque;
 
 	public:
 	void pushQueue(Message*);
-	void* popQueue();
+	Message* popQueue();
 };
 
 #endif
